@@ -92,10 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.postgresql_psycopg2',
         'NAME':'secpla_proyectos',
-        'USER':'secpla_proyectos',
-        'PASSWORD':'secpla_proyectos_123',
+        'USER':'postgres',
+        'PASSWORD':'facil1234',
         'HOST':'localhost',
-        'PORT':'5432',
+        'PORT':'5433',
     }
 }
 
