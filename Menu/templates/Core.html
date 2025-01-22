@@ -53,14 +53,13 @@
           <div class="dropdown text-end">
             <a href="#" style="text-decoration: none; color: white;" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="https://cdn-icons-png.flaticon.com/512/20/20079.png" alt="mdo" width="32" height="32" style="background-color: white;" class="rounded-circle">
-              Usted es: {{ user.first_name }}
+              Usted es: {{ user.username }}
             </a>
             <ul class="dropdown-menu text-small">
-              <li><a class="dropdown-item" href="#">Cambiar Contraseña</a></li>
+              <li><a class="dropdown-item">Cambiar Contraseña</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
-            </ul>
-          </div>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+            </ul>            
         </div>
       </div>
     </header>
