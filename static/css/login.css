@@ -9,12 +9,24 @@
 
 body {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  justify-content: center; 
+  align-items: center;
   min-height: 100vh;
   width: 100%;
+  margin: 0; 
+  padding: 0 10px; 
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 500px; /* Asegura que no se haga más grande que 500px */
   padding: 0 10px;
-  
+  margin-top: 150px; /* Ajusta según la altura de los logos fijos */
 }
 
 body::before {
@@ -41,6 +53,7 @@ body::before {
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+
 }
 
 form {
@@ -144,34 +157,53 @@ button:hover {
 }
 
 h1 {
+    margin-top: 20px;
     font-weight: bolder;
     font-size: 50px;
-    padding-block-end: 2rem;
     text-align: center;
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra negra difusa */
+    margin-bottom: 20px;
 }
 
-.logo{
-  max-width: 25rem;
-}
 
 
 .wrapper-error {
+  background: #00000070;
   padding-block-start: 2rem;
   width: 400px;
   border-radius: 8px;
   padding: 30px;
   text-align: center;
-  border: 1px solid rgba(255, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(8px);
-  color: red;
+  color: rgb(255, 255, 255);
   font-weight: bolder;
 }
 
-.container{
-
-  padding-top: 6rem;
-
+/* Contenedor de los logos */
+.logo-container {
+  display: flex;
+  justify-content: space-between; /* Coloca los logos a los extremos */
+  align-items: center; /* Centra verticalmente los logos */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  margin-bottom: 20px;
+  position: fixed;
+  z-index: 10;
 }
+
+/* Estilo de los logos */
+.logo {
+  max-width: 100px; /* Ajuste para pantallas grandes */
+  height: auto; /* Mantiene proporciones */
+  object-fit: contain; /* Evita deformaciones */
+  margin-right: 45px;
+}
+
+.logo2 {
+  max-width: 200px; /* Ajuste para pantallas grandes */
+  height: auto; /* Mantiene proporciones */
+  object-fit: contain; /* Evita deformaciones */
+}
+
