@@ -1,0 +1,181 @@
+header {
+    padding: 1rem;
+}
+main {
+    padding: 2rem;
+}
+.section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 68%);
+}
+
+label {
+    display: block;
+    margin: 0.5rem 0;
+}
+input, select, button {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #5a5a5a;
+    border-radius: 4px;
+}
+button {
+    background-color: rgb(101, 141, 94);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    width: 12rem;
+}
+button:hover {
+    background-color: rgb(66, 106, 59);
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+th, td {
+    border: 1px solid #707070;
+    padding: 0.8rem;
+    text-align: left;
+}
+th {
+    background-color: rgb(101, 141, 94);
+    color: #ffffff;
+}
+.file-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.file-input input[type="file"] {
+    flex-grow: 1;
+}
+
+.boton-1 {
+    background-color: rgb(101, 141, 94);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    width: 12rem;
+    height: 5rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+.boton-1:hover {
+    background-color: rgb(66, 106, 59);
+    color: #ffffff;
+
+}
+
+.buttonLogin {
+    width: 140px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+    background: #f7ea53;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    transition-duration: .2s;
+    box-shadow: 0px 1px 5px 0px #16233E;
+  }
+
+.buttonPreview {
+    height: 1.9rem;
+    width: auto;
+    font-size: .924rem;
+    justify-content: space-between;
+    background: #6b8965;
+}
+
+
+.buttonLogin:hover {
+    background: #4d7544;
+  }
+  
+.buttonLogin:hover .bell {
+    animation: bellRing 0.9s both;
+  }
+  
+  /* bell ringing animation keyframes*/
+  @keyframes bellRing {
+  
+    0%,
+    100% {
+      transform-origin: top;
+    }
+  
+    15% {
+      transform: rotateZ(10deg);
+    }
+  
+    30% {
+      transform: rotateZ(-10deg);
+    }
+  
+    45% {
+      transform: rotateZ(5deg);
+    }
+  
+    60% {
+      transform: rotateZ(-5deg);
+    }
+  
+    75% {
+      transform: rotateZ(2deg);
+    }
+  }
+
+.iconContainerButton {
+    margin-inline: 1rem;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    /* Posicionar el tooltip arriba del icono */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: 120px;
+  }
+  
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    /* Apunta hacia abajo */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  .icon-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  
+  .icon-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }

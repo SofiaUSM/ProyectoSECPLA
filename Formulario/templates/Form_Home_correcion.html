@@ -1,0 +1,316 @@
+{% extends 'Core.html' %}
+
+{% load static %}
+
+{% block main_content %}
+
+<link rel="stylesheet" href="{% static 'css/Form_home.css' %}">
+
+
+<div class="container mt-4" style="max-width: 85rem;" >
+    
+
+
+    <h1 class="text-center" style="color: rgb(0, 0, 0);">xasdasdasdasdasdasd</h1 >
+
+    <div class="caja" style="box-shadow: 0 2px 4px rgb(0 0 0 / 68%);">
+
+    
+    <br>
+        <a class="btn-crear" style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" >Nueva Prefactibilidad</a>
+    <br>
+    <br>
+        <div id="tabla-container">
+            <div id="pagination-controls"></div>
+            <table id="tablaSolicitudes" class="tablaSolicitudes">
+                <thead>
+                    <tr>
+                        <th class="inicio">Numero de ingreso</th>
+                        <th>Nombre del proyecto</th>
+                        <th>Fecha de llegada</th>
+                        <th>Estado</th>
+                        <th>Ultima actualización</th>
+                        <th>      -----------    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for iniciativas in iniciativa %}
+                    <tr>
+                        <td>{{ iniciativas.id }}</td>
+                        <td>{{ iniciativas.nombre_proyecto }}</td>
+                        <td>{{ iniciativas.fecha }}</td>
+                        <td>{{ iniciativas.Estado }}</td>
+                        <td>{{ iniciativas.updated }}</td>
+                        <td> 
+                            <button class="button-cls active">Acciones</button>
+
+                                <div class="dd-cls">
+                                <button class="button-cls-split"> 
+                                        <i class="fa fa-angle-double-down"></i>
+                                </button>
+                                <div class="dd-cont-cls">
+                                    <a href="#" data-id="{{ iniciativas.id }}" class="open-modal">Visualizar</a>
+                                    <a href="{% url 'actualizar' iniciativas.id %}">Editar</a>
+                                    <a href="#">Eliminar</a>
+                                </div>
+
+
+                                
+
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11">No hay datos</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+
+<div class="modal fade" id="dynamicEmailModal" tabindex="-1" aria-labelledby="dynamicEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="dynamicEmailModalLabel">Nueva Iniciativa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <form id="dynamicEmailForm" method="POST" class="px-3" enctype="multipart/form-data" action="{% url 'menu' %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="projectName" class="form-label">1. Nombre proyecto</label>
+                                <input class="form-control" type="text" id="nombre_proyecto" name="nombre_proyecto">
+                            </div>
+                            <div class="mb-3">
+                                <label for="entryNumber" class="form-label">2. Numero de ingreso</label>
+                                <input class="form-control" type="text" id="numero" name="numero">
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="professionalsSelect" class="form-label">3. Profesional Encargado</label>
+                                <select id="profesional" name="profesional" class="form-select">
+                                    {% for user in users %}
+                                        <option  value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        
+                            <div class="mb-3">
+                                <label for="usuarios" class="form-label">4. Profesional de apoyo</label>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Asignado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                            <td>
+                                                <input type="checkbox" name="usuarios" id="usuarios" value="{{ user.id }}" id="usuario-{{ user.id }}">
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="recibido">Crear nueva iniciativa</button>
+                        </div>
+                    </form>
+                    
+            </div>
+            <br>
+
+       
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="iniciativaModal" tabindex="-1" aria-labelledby="iniciativaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="iniciativaModalLabel">Detalles de la Iniciativa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            
+            <div class="modal-body">
+                <pre id="previewData" style="font-weight: 700;font-family: sans-serif;"></pre>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>       
+        </div>
+    </div>
+</div>
+
+{% block custom_js %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const table = document.getElementById("tablaSolicitudes");
+    const rows = Array.from(table.querySelectorAll("tbody tr")); // Convertir NodeList a Array
+    const rowsPerPage = 10;
+    const paginationControls = document.getElementById("pagination-controls");
+
+    // Crear input de búsqueda si no existe
+    if (!document.querySelector("#searchInput")) {
+        const searchInput = document.createElement("input");
+        searchInput.id = "searchInput";
+        searchInput.type = "text";
+        searchInput.placeholder = "Buscar palabra...";
+        searchInput.style.marginBottom = "10px";
+        searchInput.style.padding = "8px";
+        searchInput.style.width = "50%";
+        paginationControls.insertBefore(searchInput, paginationControls.firstChild);
+    }
+
+    // Crear contenedor de botones de paginación si no existe
+    let paginationButtons = document.querySelector("#pagination-buttons");
+    if (!paginationButtons) {
+        paginationButtons = document.createElement("div");
+        paginationButtons.id = "pagination-buttons";
+        paginationControls.appendChild(paginationButtons);
+    }
+
+    // Mostrar solo las filas de la página actual
+    function showPage(page, visibleRows) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        rows.forEach((row) => (row.style.display = "none")); // Ocultar todas las filas
+        visibleRows.slice(start, end).forEach((row) => (row.style.display = "")); // Mostrar las filas correspondientes
+    }
+
+    // Generar botones de paginación
+    function setupPagination(visibleRows) {
+        paginationButtons.innerHTML = ""; // Limpiar botones previos
+        const totalPages = Math.ceil(visibleRows.length / rowsPerPage);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement("button");
+            button.textContent = i;
+            button.className = "pagination-button";
+            button.addEventListener("click", () => {
+                document.querySelectorAll(".pagination-button").forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+                showPage(i, visibleRows);
+            });
+
+            if (i === 1) button.classList.add("active");
+            paginationButtons.appendChild(button);
+        }
+    }
+
+    // Resaltar celdas que coinciden con el filtro
+    function highlightMatches(filter) {
+        rows.forEach((row) => {
+            const cells = row.querySelectorAll("td");
+            cells.forEach((cell) => {
+                const cellText = cell.textContent.toLowerCase();
+                if (filter && cellText.includes(filter)) {
+                    cell.style.backgroundColor = "yellow"; // Resaltar celda
+                } else {
+                    cell.style.backgroundColor = ""; // Restaurar fondo
+                }
+            });
+        });
+    }
+
+    // Configurar el buscador
+    const searchInput = document.querySelector("#searchInput");
+    searchInput.addEventListener("input", () => {
+        const filter = searchInput.value.toLowerCase();
+
+        // Filtrar filas según el texto ingresado
+        const filteredRows = rows.filter((row) => row.textContent.toLowerCase().includes(filter));
+
+        // Resaltar coincidencias
+        highlightMatches(filter);
+
+        // Configurar paginación con las filas filtradas
+        setupPagination(filteredRows);
+        showPage(1, filteredRows); // Mostrar la primera página de los resultados filtrados
+    });
+
+    // Inicializar con todas las filas visibles
+    setupPagination(rows);
+    showPage(1, rows);
+});
+</script>
+
+<script>
+let isFetching = false;
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".open-modal").forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (isFetching) return; // Evita solicitudes repetidas
+            isFetching = true;
+
+            const iniciativaId = this.getAttribute("data-id");
+
+            fetch(`/Forms/iniciativa/${iniciativaId}/detalles/`)
+                .then(response => response.json())
+                .then(data => {
+                    const previewDataElement = document.getElementById('previewData');
+                    
+                    // Generar contenido dinámico
+                    let content = `Número de Ingreso: ${data.numero_ingreso || 'N/A'}\n\n` +
+                                  `Nombre del Proyecto: ${data.nombre_proyecto || 'N/A'}\n\n` +
+                                  `Estado: ${data.estado || 'N/A'}\n\n` +
+                                  `Profesional: ${data.profesional || 'Sin Asignar'}\n\n` +
+                                  `Detalle de Visita: ${data.detalle_visita || 'Sin Detalles'}\n\n`;
+
+                    // Adjuntar enlaces si hay archivos adjuntos
+                    if (data.visita_adjunto) {
+                        const baseURL = window.location.origin; // Obtiene la dirección base del servidor
+                        const fullURL = baseURL + data.visita_adjunto; // Construye la URL completa
+                        const fileName = data.visita_adjunto.split('/').pop(); // Extrae el nombre del archivo
+
+                        content += `Archivo Adjunto: <a href="${fullURL}" download>${fileName}</a>\n\n`;
+                    } else {
+                        content += `No hay archivos adjuntos disponibles\n\n`;
+                    }
+
+                    previewDataElement.innerHTML = content;
+
+
+                    // Mostrar el modal
+                    const modal = new bootstrap.Modal(document.getElementById("iniciativaModal"));
+                    modal.show();
+                })
+                .catch(error => console.error("Error al cargar los detalles:", error))
+                .finally(() => {
+                    isFetching = false; // Restablecer indicador
+                });
+        });
+    });
+});
+
+</script>
+
+{% endblock %}
+
+{% endblock main_content %}
+

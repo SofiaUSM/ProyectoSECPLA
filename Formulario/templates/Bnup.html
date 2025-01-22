@@ -1,0 +1,205 @@
+{% extends 'Core.html' %}
+
+{% load static %}
+
+{% block main_content %}
+
+<link href="{% static 'css/bnup.css' %}" rel="stylesheet" />
+
+<div class="container"> 
+
+    <h1>Sistema de Ingresos de BNUP</h1>
+        <a style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" >
+            <button> Crear respaldo de BNUP </button>
+        </a>
+        <section class="section" id="busqueda">
+            <h2>Solicitudes</h2>
+             <!-- Resultados de búsqueda -->
+             <table id="tablaResultados">
+                <thead>
+                    <tr>
+                        <th>Código del Proyecto</th>
+                        <th>Unidad Técnica</th>
+                        <th>Funcionario SECPLA</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Estado</th>
+                        <th>Ver adjunto</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bnup in bnups %}
+                    <tr>
+                        <td>{{ bnup.n_de_ingreso }}</td>
+                        <td>{{ bnup.calle }}</td>
+                        <td>{{ bnup.funcionario.first_name }}</td>
+                        <td>{{ bnup.fecha }}</td>
+                        <td>{{ bnup.estado }}</td>
+                        <td style="display: flex;justify-content: center; border-inline: 1;">
+                            {% if bnup.archivo_adjunto  %}
+
+                            <div class="icon-container">                        
+                                <a href="{{ bnup.archivo_adjunto.url }}" target="_blank" style="text-decoration: none;">
+                                    <button class="buttonLogin buttonPreview">
+                                        <span class="material-symbols-outlined bell">find_in_page</span>
+                                  </button>
+                                </a>                        
+                                <div class="tooltip">Ver archivo de ingreso</div>
+                            </div> 
+                            {% endif  %}
+                        </td>
+                       
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11">No hay datos</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <!-- Sección de ingreso de solicitudes -->
+        <section>
+
+            <div class="modal fade" id="dynamicEmailModal" tabindex="-1" aria-labelledby="dynamicEmailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="dynamicterrenoModalLabel">Ingrese el BNUP respondido por la unidad técnica</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                                <form id="dynamicEmailForm" method="POST" class="px-3" enctype="multipart/form-data" action="{% url 'bnup' %}">
+                                    {% csrf_token %}
+                                    <label for="codigoProyecto">Código del Proyecto:</label>
+                                    <input type="text" id="codigoProyecto" name="codigoProyecto" placeholder="Ingrese el código del proyecto" required>
+
+                                    <label for="codigoProyecto">REF:</label>
+                                    <textarea name="ref" id="ref" cols="95%" rows="5"  placeholder="Ingrese REF" ></textarea>
+
+                                    <label for="codigoProyecto">MAT:</label>
+                                    <textarea name="mat" id="mat" cols="95%" rows="5"  placeholder="Ingrese MAT" ></textarea>
+             
+                                    <label for="Calle">Calle:</label>
+                                    <input type="text" id="Calle" name="Calle" placeholder="Ingrese la calle" required>
+
+                                    <label for="SECPLA">Salida SECPLA:</label>
+                                    <input type="text" id="n_de_ingreso" name="n_de_ingreso" placeholder="Ingrese la Salida SECPLA" required>
+
+                                    <label for="Codigo">Codigo SECPLA:</label>
+                                    <input type="number" id="codigo" name="codigo" placeholder="Ingrese Código SECPLA" required>
+
+                                    <label for="unidadTecnica">Unidad Técnica Responsable:</label>
+                                    <select id="unidadTecnica" name="unidadTecnica" required>
+                                        <option value="" disabled selected>Seleccione una unidad técnica</option>
+                                        {% for value, label in Unida_técnica %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                
+                                    <!-- Selección de funcionario -->
+                                    <label for="funcionarioSecpla">Funcionario SECPLA a Cargo:</label>
+
+                                    <!-- Selección de funcionario -->
+                                    <div id="selectFuncionarioContainer">
+                                        <select id="funcionarioSecpla" name="funcionarioSecpla">
+                                            <option value="" disabled selected>Seleccione un funcionario</option>
+                                            {% for usuario in usuarios %}
+                                            <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <!-- Campo de entrada para agregar un nuevo funcionario -->
+                                    <div id="newFuncionarioContainer" style="display: none; margin-top: 10px;">
+                                        <label for="newFuncionario">Nombre del Nuevo Funcionario:</label>
+                                        <input type="text" id="newFuncionario" name="newFuncionario" placeholder="Ingrese el nombre del funcionario" disabled>
+                                    </div>
+
+                                    <!-- Botón para alternar entre las opciones -->
+                                    <button type="button" id="toggleFuncionarioBtn" onclick="toggleFuncionarioMode()" style="margin-top: 10px;">
+                                        Cambiar a agregar nuevo funcionario
+                                    </button>
+
+
+
+                                    <label for="fechaIngreso">Fecha de Ingreso:</label>
+                                    <input type="date" id="fechaIngreso" name="fechaIngreso" required>
+
+                                    <label for="adjuntarArchivo">Adjuntar Archivo:</label>
+                                    <div class="file-input">
+                                        <input type="file" id="adjuntarArchivo" name="adjuntarArchivo" required>
+                                    </div>                                    
+
+                                    <div>
+                                        <label for="codigoProyecto">Constituye:</label>
+                                        <div id="codigoProyecto" style="display: flex;text-align: center;justify-content: space-evenly;flex-wrap: nowrap;flex-direction: row;align-items: flex-end;">
+                                            <label for="constituyesi">Sí</label>
+                                            <input type="radio" id="constituyesi" name="constituye" value="si">
+                                            <label for="constituyeNo">No</label>
+                                            <input type="radio" id="constituyeNo" name="constituye" value="no">
+
+                                            <label for="constituyeOtros">Otros</label>
+                                            <input type="radio" id="constituyeOtros" name="constituye" value="otros">
+                                        </div>
+                                    
+                                        <input type="text" id="Constituye_otro" name="Constituye_otro" placeholder="Escribe Otro" disabled>
+                                    </div>
+                                                                        
+                                    <button type="submit">Registrar Solicitud</button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+</div>
+
+<script src="{% static 'js/Formulario.js' %}"></script>
+<script>
+    const radioOtros = document.getElementById('constituyeOtros');
+    const textOtros = document.getElementById('Constituye_otro');
+    const radios = document.querySelectorAll('input[name="constituye"]');
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radioOtros.checked) {
+                textOtros.disabled = false;
+                textOtros.focus();
+            } else {
+                textOtros.disabled = true;
+                textOtros.value = ''; // Limpiar el campo si no está seleccionado
+            }
+        });
+    });
+</script>
+<script>
+    let isAddingNewFuncionario = false;
+
+    function toggleFuncionarioMode() {
+        const selectFuncionarioContainer = document.getElementById("selectFuncionarioContainer");
+        const newFuncionarioContainer = document.getElementById("newFuncionarioContainer");
+        const newFuncionarioInput = document.getElementById("newFuncionario");
+        const toggleButton = document.getElementById("toggleFuncionarioBtn");
+
+        if (isAddingNewFuncionario) {
+            // Cambiar a selección de funcionario existente
+            selectFuncionarioContainer.style.display = "block";
+            newFuncionarioContainer.style.display = "none";
+            newFuncionarioInput.disabled = true;
+            toggleButton.textContent = "Cambiar a agregar nuevo funcionario";
+        } else {
+            // Cambiar a agregar nuevo funcionario
+            selectFuncionarioContainer.style.display = "none";
+            newFuncionarioContainer.style.display = "block";
+            newFuncionarioInput.disabled = false;
+            toggleButton.textContent = "Cambiar a seleccionar funcionario existente";
+        }
+
+        isAddingNewFuncionario = !isAddingNewFuncionario;
+    }
+</script>
+
+
+{% endblock main_content %}

@@ -1,0 +1,179 @@
+
+.mi_container {
+  background: #eee;
+  box-sizing: border-box;
+  padding: 1vh;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  line-height: 1.5;
+  width: 60rem;
+  margin: 0 auto;
+  font-size: 112%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.group_line{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+}
+.groups path
+{
+  fill: rgb(47, 47, 47);
+}
+.groups path.activate
+{
+  fill: rgb(0, 132, 255);
+}
+
+.caja {
+    display: flex;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    align-items: center;
+  }
+
+.linea {
+  display: flex
+;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.linea svg {
+  height: 28px;
+}
+
+.linea svg {
+  height: 28px;
+}
+
+.arcodion {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+}
+
+.activar-arcodion {
+  height: 2rem;
+  color: gray; /* Color para el estado desactivado */
+  transition: color 0.3s ease; /* Transición suave */
+}
+
+.activar-arcodion.activo {
+  color: green; /* Color para el estado activado */
+}
+
+.recibido{
+  background-color: #ffffff;
+  border: 2px solid rgb(86, 118, 79); /* Borde con el mismo color que el texto */
+  color: rgb(86, 118, 79);
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  border-radius: 5px; /* Bordes redondeados opcionales */
+} 
+
+.recibido:hover {
+  background-color: rgb(86, 118, 79); /* Color de fondo cambia al color del texto */
+  color: #ffffff; /* El texto cambia a blanco */
+  border: 2px solid rgb(86, 118, 79); /* Mantiene el borde */
+}
+
+.no_recibido{
+  height: 2rem;
+
+  color: gray; /* Color para el estado desactivado */
+
+} 
+.no_recibido svg{
+  height: 28px;
+
+
+} 
+
+
+.center_p{
+  margin: revert;
+}
+
+
+
+
+.caja .interaction{
+  display: block;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  font-weight: bold;
+  border-radius: 5%;
+}
+
+
+.hidden {
+  display: none;
+}
+
+
+
+#replaceLink {
+  color: rgb(86, 118, 79);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#replaceLink:hover {
+  color: rgb(86, 118, 79);
+}
+
+.btn-complete{
+  display: block;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  background: #ffffff;
+  color: rgb(86, 118, 79);
+  border-color: rgb(86, 118, 79);
+  border-radius: 8%;
+  transition: 0.5s;
+}
+
+.btn-complete:hover{
+
+  background: rgb(86, 118, 79);
+  color: #ffffff;
+  border-color: rgb(86, 118, 79);
+}
+
+.recibido{
+  background-color: #ffffff;
+  border: 2px solid rgb(86, 118, 79); /* Borde con el mismo color que el texto */
+  color: rgb(86, 118, 79);
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  border-radius: 5px; /* Bordes redondeados opcionales */
+} 
+
+.recibido:hover {
+  background-color: rgb(86, 118, 79); /* Color de fondo cambia al color del texto */
+  color: #ffffff; /* El texto cambia a blanco */
+  border: 2px solid rgb(86, 118, 79); /* Mantiene el borde */
+}
