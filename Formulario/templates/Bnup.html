@@ -37,7 +37,11 @@
         <table id="tablaResultados">
             <thead>
                 <tr>
-                    <th>Seleccione</th>
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.is_staff %}
+                        <th>Seleccione</th>
+                        {% endif %}
+                    {% endif %}
                     <th>Código SECPLAPP</th>
                     <th>Unidad Técnica</th>
                     <th>Calle</th>
@@ -51,10 +55,13 @@
             <tbody>
                 {% for bnup in bnups %}
                 <tr>
-                    <td>
-                        <input type="checkbox" class="delete-checkbox" value="{{ bnup.id }}">
-                    </td>
-
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.is_staff %}
+                        <td>
+                            <input type="checkbox" class="delete-checkbox" value="{{ bnup.id }}">
+                        </td>
+                        {% endif %}
+                    {% endif %}
                     <td>{{ bnup.codigo }}</td>
                     <td>{{ bnup.unidad_técnica }}</td>
                     <td>{{ bnup.calle }}</td>
