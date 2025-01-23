@@ -130,68 +130,83 @@ def formulario(request):
 
         iniciativa.save()
         return redirect('menu')
- 
+
     return render(request,'Formulario.html',)
 
 def bnup(request):
     usuarios = Funcionario.objects.all()
     funcionario = ""
+    # Definir las opciones de Unidad Técnica
     UNI_TEC ={
         ('Asesoría Urbana','AU'),
         ('Direcciones de Obras Municipales','DOM'),
     }
     bnup = bnup_ingreso.objects.all()
     data = {
-          "usuarios":usuarios,
-          "Unida_técnica": UNI_TEC,
-          "bnups":bnup,
-     }
+        "usuarios":usuarios,
+        "Unidad_técnica": UNI_TEC,
+        "bnups":bnup,
+    }
     if request.method == "POST":
-            codigo = request.POST['codigo']
-            constituye = limpiar_texto(request.POST.get('constituye', ''))
-            constituye_otro = limpiar_texto(request.POST.get('Constituye_otro', ''))
-            ref = limpiar_texto(request.POST.get('ref', ''))
-            mat = limpiar_texto(request.POST.get('mat', ''))
-            Calle = limpiar_texto(request.POST.get('Calle', ''))
-            n_de_ingreso = limpiar_texto(request.POST.get('n_de_ingreso', ''))
-            funcionarioSecpla = limpiar_texto(request.POST.get('funcionarioSecpla', ''))
-            unidadTecnica = limpiar_texto(request.POST.get('unidadTecnica', ''))
-            fechaIngreso = limpiar_texto(request.POST.get('fechaIngreso', ''))
-            archivo_adjunto = request.FILES.get('adjuntarArchivo', None)
 
-            nuevo_funcionario_nombre = limpiar_texto(request.POST.get('newFuncionario', ''))
+        print(request.POST)
+
+        codigo = request.POST['codigo']
+        constituye = limpiar_texto(request.POST.get('constituye', ''))
+        constituye_otro = limpiar_texto(request.POST.get('Constituye_otro', ''))
+        ref = limpiar_texto(request.POST.get('ref', ''))
+        mat = limpiar_texto(request.POST.get('mat', ''))
+        Calle = limpiar_texto(request.POST.get('Calle', ''))
+        n_de_ingreso = limpiar_texto(request.POST.get('n_de_ingreso', ''))
+        funcionarioSecpla = limpiar_texto(request.POST.get('funcionarioSecpla', ''))
+        unidadTecnica = limpiar_texto(request.POST.get('unidadTecnica', ''))
+        fechaIngreso = limpiar_texto(request.POST.get('fechaIngreso', ''))
+        archivo_adjunto = request.FILES.get('adjuntarArchivo', None)
+
+        nuevo_funcionario_nombre = limpiar_texto(request.POST.get('newFuncionario', ''))
 
             # Obtener o crear el Funcionario
-            if funcionarioSecpla == "NEW" and nuevo_funcionario_nombre:
-                nuevo_usuario = Funcionario.objects.create(nombre=nuevo_funcionario_nombre)
-                funcionario = nuevo_usuario 
-            else:
-                funcionario = get_object_or_404(Funcionario, pk=funcionarioSecpla)
+        if 'newFuncionario' in request.POST and request.POST['newFuncionario'].strip():
+            nuevo_funcionario_nombre = limpiar_texto(request.POST['newFuncionario'].strip())
 
-            # Crear la instancia de bnup_ingreso
-            bnup = bnup_ingreso.objects.create(
-                unidad_técnica=unidadTecnica, 
-                funcionario=funcionario,  # Pasamos la instancia de Funcionario
-                fecha=fechaIngreso,
-                calle=Calle,
-                n_de_ingreso=n_de_ingreso,
-                ref=ref,
-                mat=mat,
-                codigo=codigo,
-                constituye=constituye,
-                otro_constituye=constituye_otro,
-            )
+                # Verificar si el funcionario ya existe con ese nombre
+            funcionario_existente = Funcionario.objects.filter(nombre__iexact=nuevo_funcionario_nombre).first()
+                
+            if funcionario_existente:
+                funcionario = funcionario_existente  # Usar el funcionario existente
+            else:       # Si no existe, crear uno nuevo
+                funcionario = Funcionario.objects.create(nombre=nuevo_funcionario_nombre)
+        else:
+            funcionario = Funcionario.objects.filter(pk=funcionarioSecpla.strip()).first()
+
+        if not funcionario:
+            # Si no se encuentra el funcionario
+            data["error"] = "Funcionario no válido o no seleccionado"
+            return render(request, 'Bnup.html', data)
+
+    # Crear la instancia de bnup_ingreso
+        bnup = bnup_ingreso.objects.create(
+            unidad_técnica=unidadTecnica, 
+            funcionario=funcionario,  # Pasamos la instancia de Funcionario
+            fecha=fechaIngreso,
+            calle=Calle,
+            n_de_ingreso=n_de_ingreso,
+            ref=ref,
+            mat=mat,
+            codigo=codigo,
+            constituye=constituye,
+            otro_constituye=constituye_otro,
+        )
+
+        print("BNUP creado:", bnup)
 
             # Guardar el archivo adjunto si existe
-            if archivo_adjunto:
-                bnup.archivo_adjunto = archivo_adjunto
-                bnup.save()
+        if archivo_adjunto:
+            bnup.archivo_adjunto = archivo_adjunto
+            bnup.save()
 
-            return redirect('bnup')
+        return redirect('bnup')
 
-
-
-    
     return render(request,'Bnup.html',data)
 
 def limpiar_texto(texto):
