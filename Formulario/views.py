@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404, render,redirect
 from django.urls import reverse
 from .models import *
 from django.utils.timezone import make_aware
+from django.contrib import messages
+
 
 # Create your views here.
 def menu(request):
@@ -135,12 +137,12 @@ def formulario(request):
 
 def bnup(request):
     usuarios = Funcionario.objects.all()
-    funcionario = ""
+    funcionario = None
     # Definir las opciones de Unidad Técnica
-    UNI_TEC ={
-        ('Asesoría Urbana','AU'),
-        ('Direcciones de Obras Municipales','DOM'),
-    }
+    UNI_TEC = [
+        ('Asesoría Urbana', 'AU'),
+        ('Direcciones de Obras Municipales', 'DOM'),
+    ]
     bnup = bnup_ingreso.objects.all()
     data = {
         "usuarios":usuarios,
@@ -225,17 +227,16 @@ def actualizar(request,id=0):
 
     if request.method == "POST":
         if request.FILES.get('au_archivo'):
-                iniciativa.solicitud_au_adjunto = request.FILES.get('au_archivo')
-                iniciativa.solicitud_au = entregado(request.FILES.get('au_archivo'))
-
+            iniciativa.solicitud_au_adjunto = request.FILES.get('au_archivo')
+            iniciativa.solicitud_au = entregado(request.FILES.get('au_archivo'))
 
         if request.FILES.get('fac_archivo'):
-                iniciativa.factibilidad_adjunto = request.FILES.get('fac_archivo')
-                iniciativa.factibilidad = entregado(request.FILES.get('fac_archivo'))
+            iniciativa.factibilidad_adjunto = request.FILES.get('fac_archivo')
+            iniciativa.factibilidad = entregado(request.FILES.get('fac_archivo'))
 
         iniciativa.save()
 
-        return redirect('menu')    
+        return redirect('menu')
     return render(request,'Formulario.html',data)
 
 def actualizar_coordinacion(request, id=0):
@@ -342,7 +343,10 @@ def fechas_hoy(algo):
 
 def entregado(algo):
 
+
     if algo:
         return True
     else:
         return False
+    
+

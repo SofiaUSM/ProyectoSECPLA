@@ -18,9 +18,20 @@
     <a style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1">
         <button> Crear respaldo de BNUP </button>
     </a>
+
+    {% if request.user.is_authenticated %}
+        {% if request.user.is_staff %}
+            <a style="text-decoration: none;">
+                <button class="eliminar"  style=" background-color: #dd1d1d;"> Eliminar bnup </button>
+            </a>
+        {% endif %}
+    {% endif %}
+
+
+
     <section class="section" id="busqueda">
         <h2>Solicitudes</h2>
-        <!-- Resultados de búsqueda -->
+
         <!-- Resultados de búsqueda -->
         <table id="tablaResultados">
             <thead>
@@ -31,23 +42,23 @@
                     <th>Funcionario SECPLA</th>
                     <th>Fecha de Ingreso</th>
                     <th>Constituye</th>
-                    <th>Entrada</th>  <!-- Nueva columna -->
-                    <th>Ver adjunto</th>  <!-- Nueva columna -->
+                    <th>Datos Entrada</th> 
+                    <th>Ver adjunto</th> 
                 </tr>
             </thead>
             <tbody>
-                {% for bnup in bnups %}
+                {% for bnup in bnups reversed %}
                 <tr>
                     <td>{{ bnup.codigo }}</td>
                     <td>{{ bnup.unidad_técnica }}</td>
                     <td>{{ bnup.calle }}</td>
                     <td>{{ bnup.funcionario.nombre }}</td>
-                    <td>{{ bnup.fecha }}</td>
+                    <td>{{ bnup.fecha|date:"d/m/Y" }}</td>
 
-                    <!-- Muestra los datos guardados en el modelo -->
+
                     <td>
                         {% if bnup.constituye == "OTRO" %}
-                            {{ bnup.otro_constituye|default:"Otro" }}
+                            {{ bnup.constituye|default:"Otro" }}
                         {% else %}
                             {{ bnup.constituye }}
                         {% endif %}
@@ -55,23 +66,23 @@
 
                     
                     <!-- Previsualización de datos de entrada -->
-                    <td style="display: flex; justify-content: center; border-inline: 1;">
+                    <td>
                         <div class="icon-container">                        
-                            <button class="buttonLogin buttonPreview" onclick="openPreviewModal('{{ bnup.n_de_ingreso }}',
-                                        '{{ bnup.funcionario.nombre }}', '{{ bnup.fecha }}', '{{ bnup.constituye }}',
+                            <button class="buttonLogin buttonPreview button1" onclick="openPreviewModal('{{ bnup.n_de_ingreso }}',
+                                        '{{ bnup.funcionario.nombre }}', '{{ bnup.fecha }}', '{{ bnup.otro_constituye }}',
                                         '{{ bnup.calle }}', '{{ bnup.ref }}', '{{ bnup.mat }}')">
-                                <span class="material-symbols-outlined bell">find_in_page</span>
+                                <span class="material-symbols-outlined bell">export_notes</span>
                             </button>                        
                             <div class="tooltip">Ver datos de entrada</div>
                         </div>
                     </td>
 
                     <!-- Archivo adjunto -->
-                    <td style="display: flex; justify-content: center; border-inline: 1;">
+                    <td>
                         {% if bnup.archivo_adjunto %}
                         <div class="icon-container">                        
                             <a href="{{ bnup.archivo_adjunto.url }}" target="_blank" style="text-decoration: none;">
-                                <button class="buttonLogin buttonPreview">
+                                <button class="buttonLogin buttonPreview button2">
                                     <span class="material-symbols-outlined bell">find_in_page</span>
                                 </button>
                             </a>                        

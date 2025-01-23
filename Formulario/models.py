@@ -271,6 +271,7 @@ def content_file_bnup_adjunto(instance, filename):
 class Funcionario(models.Model):
     nombre = models.CharField(max_length=255,blank=True,null=True)
 
+
 class bnup_ingreso(models.Model):
 
     id = models.BigAutoField(primary_key=True, unique=True)
@@ -280,8 +281,8 @@ class bnup_ingreso(models.Model):
     ref = models.TextField(blank=True,null=True)
     mat = models.TextField(blank=True,null=True)
 
-    n_de_ingreso = models.TextField(blank=True,null=True)
-    codigo = models.BigIntegerField(blank=True,null=True)
+    n_de_ingreso = models.TextField(blank=True,null=True) # ESTO NO SE QUE ES
+    codigo = models.BigIntegerField(blank=True,null=True) # CODIGO SECPLAPP
 
     funcionario = models.ForeignKey(Funcionario, on_delete=models.CASCADE, null=True, blank=True)
     unidad_técnica = models.CharField(max_length=100, blank=True, default='',choices=UNI_TEC)
