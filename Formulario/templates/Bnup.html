@@ -22,7 +22,8 @@
     {% if request.user.is_authenticated %}
         {% if request.user.is_staff %}
             <a style="text-decoration: none;">
-                <button class="eliminar"  style=" background-color: #dd1d1d;"> Eliminar bnup </button>
+                <button class="eliminar" style="background-color: #dd1d1d;" onclick="deleteSelected()">Eliminar bnup</button>
+
             </a>
         {% endif %}
     {% endif %}
@@ -36,6 +37,7 @@
         <table id="tablaResultados">
             <thead>
                 <tr>
+                    <th>Seleccione</th>
                     <th>Código SECPLAPP</th>
                     <th>Unidad Técnica</th>
                     <th>Calle</th>
@@ -49,6 +51,10 @@
             <tbody>
                 {% for bnup in bnups %}
                 <tr>
+                    <td>
+                        <input type="checkbox" class="delete-checkbox" value="{{ bnup.id }}">
+                    </td>
+
                     <td>{{ bnup.codigo }}</td>
                     <td>{{ bnup.unidad_técnica }}</td>
                     <td>{{ bnup.calle }}</td>
@@ -119,10 +125,10 @@
                                     <input type="text" id="codigoProyecto" name="codigoProyecto" placeholder="Ingrese el código del proyecto" required>
 
                                     <label for="codigoProyecto">REF:</label>
-                                    <textarea name="ref" id="ref" cols="95%" rows="5"  placeholder="Ingrese REF" ></textarea>
+                                    <textarea name="ref" id="ref" cols="97%" rows="2"  placeholder="Ingrese REF" ></textarea>
 
                                     <label for="codigoProyecto">MAT:</label>
-                                    <textarea name="mat" id="mat" cols="95%" rows="5"  placeholder="Ingrese MAT" ></textarea>
+                                    <textarea name="mat" id="mat" cols="97%" rows="2"  placeholder="Ingrese MAT" ></textarea>
              
                                     <label for="Calle">Calle:</label>
                                     <input type="text" id="Calle" name="Calle" placeholder="Ingrese la calle" required>
@@ -284,6 +290,38 @@
 </script>
 
 
+<script>
+    function deleteSelected() {
+        const checkboxes = document.querySelectorAll('.delete-checkbox:checked');
+        const selectedIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+        if (selectedIds.length === 0) {
+            alert('Por favor, selecciona al menos un registro para eliminar.');
+            return;
+        }
+
+        if (confirm('¿Estás seguro de que deseas eliminar los registros seleccionados?')) {
+            fetch("{% url 'eliminar_bnup' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+                body: JSON.stringify({ ids: selectedIds }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Registros eliminados exitosamente.');
+                    location.reload();
+                } else {
+                    alert('Hubo un error al eliminar los registros.');
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    }
+</script>
 
 
 {% endblock main_content %}

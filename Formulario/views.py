@@ -6,6 +6,8 @@ from django.urls import reverse
 from .models import *
 from django.utils.timezone import make_aware
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 # Create your views here.
@@ -350,14 +352,15 @@ def entregado(algo):
         return False
     
 
+@csrf_exempt
 def eliminar_bnup(request):
-    if request.method == 'POST':
-        ids_a_eliminar = request.POST.getlist('bnup_ids')  # Lista de IDs seleccionados
-        
-        if ids_a_eliminar:
-            bnup.objects.filter(id__in=ids_a_eliminar).delete()  # Eliminar los ítems seleccionados
-            messages.success(request, 'Se han eliminado los elementos seleccionados.')
-        else:
-            messages.error(request, 'No se seleccionó ningún elemento para eliminar.')
-            
-    return redirect('nombre_de_la_vista_donde_muestras_la_tabla')  # Redirigir a la vista principal
+    if request.method == "POST":
+        data = json.loads(request.body)
+        ids = data.get("ids", [])
+
+        try:
+            # Eliminar los registros
+            bnup_ingreso.objects.filter(id__in=ids).delete()
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
