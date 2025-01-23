@@ -143,7 +143,7 @@ def bnup(request):
         ('Asesoría Urbana', 'AU'),
         ('Direcciones de Obras Municipales', 'DOM'),
     ]
-    bnup = bnup_ingreso.objects.all()
+    bnup = bnup_ingreso.objects.all().order_by('-id')
     data = {
         "usuarios":usuarios,
         "Unidad_técnica": UNI_TEC,
@@ -350,3 +350,14 @@ def entregado(algo):
         return False
     
 
+def eliminar_bnup(request):
+    if request.method == 'POST':
+        ids_a_eliminar = request.POST.getlist('bnup_ids')  # Lista de IDs seleccionados
+        
+        if ids_a_eliminar:
+            bnup.objects.filter(id__in=ids_a_eliminar).delete()  # Eliminar los ítems seleccionados
+            messages.success(request, 'Se han eliminado los elementos seleccionados.')
+        else:
+            messages.error(request, 'No se seleccionó ningún elemento para eliminar.')
+            
+    return redirect('nombre_de_la_vista_donde_muestras_la_tabla')  # Redirigir a la vista principal

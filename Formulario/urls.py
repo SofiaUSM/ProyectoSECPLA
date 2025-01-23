@@ -10,6 +10,7 @@ urlpatterns = [
     path('bnup/', views.bnup, name="bnup" ),
     path('iniciativa/<int:pk>/detalles/', views.get_iniciativa_details, name='iniciativa_detalles'),
     path('error/', views.menu_1, name="menu_1" ),
+    path('eliminar_bnup/<int:bnup_id>/', views.eliminar_bnup, name='eliminar_bnup'),
 
 
 ]
