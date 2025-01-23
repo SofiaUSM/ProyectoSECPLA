@@ -9,7 +9,7 @@ ESTADO = [
 UNI_TEC ={
     ('',''),
     ('Asesoría Urbana','AU'),
-    ('Direcciones de Obras Municipales','DOM'),
+    ('Dirección de Obras Municipales','DOM'),
 }
 
 # Create your models here.
