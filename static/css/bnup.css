@@ -15,23 +15,16 @@ label {
     display: block;
     margin: 0.5rem 0;
 }
-input, select, button {
+
+button {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
     border: 1px solid #5a5a5a;
     border-radius: 4px;
 }
-button {
-    background-color: rgb(101, 141, 94);
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    width: 12rem;
-}
-button:hover {
-    background-color: rgb(66, 106, 59);
-}
+
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -49,7 +42,6 @@ th {
 .file-input {
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 .file-input input[type="file"] {
     flex-grow: 1;
@@ -204,4 +196,162 @@ button.eliminar:hover{
 }
 button.button2:hover{
     background-color: rgb(28, 85, 13);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #FFF;
+  margin: 0;
+  box-shadow: -1px 0px 15px 0px #21699369;
+  padding: 2.25em;
+  box-sizing: border-box;
+  border: solid 1px #DDD;
+  border-radius: 0.2em;
+  font-family: sans-serif;
+  font-size: 13px;
+
+}
+
+.form .Group {
+  margin-bottom: 2em;
+}
+
+.form label {
+  margin: 0 0 10px;
+  display: block;
+  font-size: 1.25em;
+  color: #217093;
+  font-weight: 600;
+  font-family: inherit;
+  margin-top: 1em;
+
+}
+
+.form input, textarea, select {
+  padding: 0.3em 0.5em 0.4em;
+  background-color: #ffffff;
+  border: solid 2px #3e91afaf;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  font-size: 1.3em;
+  color: #000000c0;
+  font-weight: 300;
+  transition: box-shadow 0.2s linear, border-color 0.25s ease-out;
+}
+
+
+.form input:focus, select:focus, textarea:focus {
+  border-color: #006b92; /* Mantén el borde original en focus */
+  outline: none; /* Elimina el contorno adicional del navegador */
+}
+
+.form .btn {
+  display: inline-block;
+  margin: 0;
+  padding: 0.3em 0.6em;
+  background-color: #3e91af;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+  font-size: 1.2em;
+  color: #FFF;
+  transition: transform 0.1s ease-in-out, background-color 0.2s ease-out;
+}
+
+.form .btn:hover {
+  cursor: pointer;
+  background-color: #217093;
+}
+
+.form .btn:active {
+  transform: scale(0.6);
+}
+
+.form .btn-container {
+  text-align: right;
+  width: 100%; /* Asegurar que el contenedor ocupe todo el ancho */
+}
+
+input[type="radio"] {
+  width: 1.2em; /* Ajusta el tamaño del radio button */
+  height: 1.2em; /* Ajusta el tamaño del radio button */
+  margin: 0.5em; /* Espaciado alrededor de los círculos */
+}
+
+
+/* REGISTRAR SOLICITUD BUTTON
+
+/* From Uiverse.io by alexmaracinaru */ 
+.form .cta {
+  
+  position: relative;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 12px 12px;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 12rem;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+
+}
+
+.form .cta:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border-radius: 50px;
+  background: #b1dae7;
+  width: 45px;
+  height: 45px;
+  transition: all 0.3s ease;
+}
+
+.form .cta span {
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #234567;
+}
+
+.form .cta svg {
+  position: relative;
+  top: 0;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: #234567;
+  stroke-width: 2;
+  transform: translateX(-5px);
+  transition: all 0.3s ease;
+}
+
+.form .cta:hover:before {
+  width: 100%;
+  background: #b1dae7;
+}
+
+.form .cta:hover svg {
+  transform: translateX(0);
+}
+
+.form .cta:active {
+  transform: scale(0.95);
 }

@@ -16,7 +16,7 @@
 
     <h1>Sistema de Ingresos de BNUP (Sujeto a Cambios)</h1>
     <a style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1">
-        <button> Crear respaldo de BNUP </button>
+        <button class="btn1"> Crear respaldo de BNUP </button>
     </a>
 
     {% if request.user.is_authenticated %}
@@ -126,7 +126,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                                <form id="dynamicEmailForm" method="POST" class="px-3" enctype="multipart/form-data" action="{% url 'bnup' %}">
+
+                                <form id="dynamicEmailForm" method="POST" class="form" enctype="multipart/form-data" action="{% url 'bnup' %}">
                                     {% csrf_token %}
                                     <label for="codigoProyecto">Código del Proyecto:</label>
                                     <input type="text" id="codigoProyecto" name="codigoProyecto" placeholder="Ingrese el código del proyecto" required>
@@ -175,10 +176,11 @@
                                     </div>
 
                                     <!-- Botón para alternar entre las opciones -->
-                                    <button type="button" id="toggleFuncionarioBtn" onclick="toggleFuncionarioMode()" style="margin-top: 10px;">
-                                        Cambiar a agregar nuevo funcionario
-                                    </button>
-
+                                    <div class="btn-container">
+                                        <button type="button" class="btn" id="toggleFuncionarioBtn" onclick="toggleFuncionarioMode()" style="margin-top: 10px;">
+                                            Cambiar a agregar nuevo funcionario
+                                        </button>
+                                    </div>
 
 
                                     <label for="fechaIngreso">Fecha de Ingreso:</label>
@@ -204,7 +206,13 @@
                                         <input type="text" id="Constituye_otro" name="Constituye_otro" placeholder="Escribe Otro" disabled>
                                     </div>
                                                                         
-                                    <button type="submit">Registrar Solicitud</button>
+                                    <button type="submit" class="cta">
+                                        <span>Enviar</span>
+                                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                            <path d="M1,5 L11,5"></path>
+                                            <polyline points="8 1 12 5 8 9"></polyline>
+                                        </svg>
+                                    </button>                                     
                                 </form>
                         </div>
                     </div>
