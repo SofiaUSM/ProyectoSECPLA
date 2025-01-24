@@ -3,7 +3,9 @@ from django.contrib.auth import authenticate,update_session_auth_hash, login as 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import *
+from django.views.decorators.cache import never_cache
 
+@never_cache
 # Create your views here.
 
 @login_required(login_url='/login/')
@@ -18,6 +20,7 @@ def Inicio(request):
 def login(request):
     if request.user.is_authenticated:
         return redirect('menu')
+    
 
     if request.method == 'POST':
         email = request.POST.get('email')

@@ -8,48 +8,54 @@ from django.utils.timezone import make_aware
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.contrib.auth.decorators import login_required,user_passes_test
+
+
+from django.views.decorators.cache import never_cache
 
 
 # Create your views here.
+@login_required(login_url='/login/')
 def menu(request):
-    users = User.objects.all()
+        users = User.objects.all()
 
-    iniciativa = Iniciativa.objects.all()
-    data = {
-        'users':users,
-        'iniciativa':iniciativa,
-    }
-    if request.method == "POST":
-        
-        nombre_proyecto = request.POST.get('nombre_proyecto')
-        numero_ingreso = request.POST.get('numero')
-        profesional_id = request.POST.get('profesional')  # ID del profesional encargado
-        usuarios_asignados = request.POST.getlist('usuarios')  # Lista de IDs de profesionales de apoyo
+        iniciativa = Iniciativa.objects.all()
+        data = {
+            'users':users,
+            'iniciativa':iniciativa,
+        }
+        if request.method == "POST":
+            
+            nombre_proyecto = request.POST.get('nombre_proyecto')
+            numero_ingreso = request.POST.get('numero')
+            profesional_id = request.POST.get('profesional')  # ID del profesional encargado
+            usuarios_asignados = request.POST.getlist('usuarios')  # Lista de IDs de profesionales de apoyo
 
-        print(profesional_id)
-        print(usuarios_asignados)
-        # Crear la nueva iniciativa
-        profesional = User.objects.filter(id=profesional_id).first()  # Obtener el profesional encargado
-        nueva_iniciativa = Iniciativa.objects.create(
-            nombre_proyecto=nombre_proyecto,
-            numero_ingreso=numero_ingreso,
-            profesional=profesional
-        )
+            print(profesional_id)
+            print(usuarios_asignados)
+            # Crear la nueva iniciativa
+            profesional = User.objects.filter(id=profesional_id).first()  # Obtener el profesional encargado
+            nueva_iniciativa = Iniciativa.objects.create(
+                nombre_proyecto=nombre_proyecto,
+                numero_ingreso=numero_ingreso,
+                profesional=profesional
+            )
 
-        # Crear asignaciones para profesionales de apoyo
-        for user_id in usuarios_asignados:
-            user = User.objects.filter(id=user_id).first()
-            if user:
-                ini_user.objects.create(
-                    categoría='I',  # Puedes ajustar este valor según la lógica de tu aplicación
-                    id_iniciativa=nueva_iniciativa,
-                    id_user=user
-                )
-        nueva_iniciativa.save()
+            # Crear asignaciones para profesionales de apoyo
+            for user_id in usuarios_asignados:
+                user = User.objects.filter(id=user_id).first()
+                if user:
+                    ini_user.objects.create(
+                        categoría='I',  # Puedes ajustar este valor según la lógica de tu aplicación
+                        id_iniciativa=nueva_iniciativa,
+                        id_user=user
+                    )
+            nueva_iniciativa.save()
 
-        return redirect('actualizar', id=nueva_iniciativa.id)
- 
-    return render(request,'Form_Home.html',data)
+            return redirect('actualizar', id=nueva_iniciativa.id)
+    
+    
+        return render(request,'Form_Home.html',data)
 
 def menu_1(request):
     users = User.objects.all()
@@ -136,7 +142,8 @@ def formulario(request):
         return redirect('menu')
 
     return render(request,'Formulario.html',)
-
+@never_cache
+@login_required(login_url='/login/')
 def bnup(request):
     usuarios = Funcionario.objects.all()
     funcionario = None
@@ -353,6 +360,7 @@ def entregado(algo):
     
 
 @csrf_exempt
+@login_required
 def eliminar_bnup(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -364,3 +372,4 @@ def eliminar_bnup(request):
             return JsonResponse({"success": True})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
+
