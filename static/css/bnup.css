@@ -1,9 +1,7 @@
 header {
     padding: 1rem;
 }
-main {
-    padding: 2rem;
-}
+
 .section {
     margin-bottom: 2rem;
     padding: 1.5rem;
@@ -11,24 +9,22 @@ main {
     box-shadow: 0px 1px 8px rgb(0 0 0 / 68%);
 }
 
+
+
 label {
     display: block;
     margin: 0.5rem 0;
 }
 
-button {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #5a5a5a;
-    border-radius: 4px;
-}
+
+
 
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    overflow-x: auto; 
 }
 th, td {
     border: 1px solid #707070;
@@ -66,6 +62,9 @@ th {
 button.eliminar:hover{
   background-color: #460e0e;
 }
+
+
+/*******/
 
 .buttonLogin {
     width: 140px;
@@ -184,7 +183,7 @@ button.eliminar:hover{
     align-items: center;
 }
   button.button1:hover{
-      background-color: rgb(88, 48, 182);
+      background-color: rgb(21, 29, 77);
   }
 
   button.button2{
@@ -197,6 +196,11 @@ button.eliminar:hover{
 button.button2:hover{
     background-color: rgb(28, 85, 13);
 }
+
+
+
+
+/* FORMMM */
 
 .form {
   display: flex;
@@ -354,4 +358,157 @@ input[type="radio"] {
 
 .form .cta:active {
   transform: scale(0.95);
+}
+
+
+.button-container {
+  
+  display: flex; /* Usamos flexbox para alinearlos horizontalmente */
+  gap: 20px; /* Espaciado entre los botones *//* Centra los botones horizontalmente */
+  align-items: center; /* Alinea los botones verticalmente */
+  margin: 20px 0; /* Espaciado superior e inferior para el contenedor */
+}
+
+
+/* BUTTON DE RESPALDO DE BNUP
+
+
+
+
+
+/* Estilo para el botón con clase eliminar-btn */
+
+
+
+
+
+
+
+.eliminar-btn {
+  width: 170px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: #e62222;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.eliminar-btn, .eliminar-btn span {
+  transition: 200ms;
+}
+
+.eliminar-btn .text {
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+
+}
+
+.eliminar-btn .icon {
+  position: absolute;
+  border-left: 1px solid #c41b1b;
+  transform: translateX(125px);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eliminar-btn svg {
+  width: 15px;
+  fill: #eee;
+}
+
+.eliminar-btn:hover {
+  background: #ff3636;
+}
+
+.eliminar-btn:hover .text {
+  color: transparent;
+}
+
+.eliminar-btn:hover .icon {
+  width: 150px;
+  border-left: none;
+  transform: translateX(0);
+}
+
+.eliminar-btn:focus {
+  outline: none;
+}
+
+.eliminar-btn:active .icon svg {
+  transform: scale(0.8);
+}
+
+
+
+
+/* crear bnup */
+
+
+.crear-btn {
+  width: 170px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-align: start;
+  background: #4CAF50; /* Color verde para crear */
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.crear-btn, .crear-btn span {
+  transition: 200ms;
+}
+
+.crear-btn .text {
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+  
+}
+
+.crear-btn .icon {
+  position: absolute;
+  border-left: 1px solid #2c8e2c; /* Color verde más oscuro */
+  transform: translateX(125px);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crear-btn svg {
+  width: 15px;
+  fill: #eee;
+}
+
+.crear-btn:hover {
+  background: #45a049; /* Color verde más oscuro al pasar el cursor */
+}
+
+.crear-btn:hover .text {
+  color: transparent;
+}
+
+.crear-btn:hover .icon {
+  width: 150px;
+  border-left: none;
+  transform: translateX(0);
+}
+
+.crear-btn:focus {
+  outline: none;
+}
+
+.crear-btn:active .icon svg {
+  transform: scale(0.8);
 }

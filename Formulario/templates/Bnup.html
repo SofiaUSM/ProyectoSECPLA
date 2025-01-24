@@ -8,30 +8,43 @@
 
 <link href="{% static 'css/bnup.css' %}" rel="stylesheet" />
 
-
-
+<h1>Sistema de Ingresos de BNUP (Sujeto a Cambios)</h1>
 
 
 <div class="container"> 
-
-    <h1>Sistema de Ingresos de BNUP (Sujeto a Cambios)</h1>
-    <a style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1">
-        <button class="btn1"> Crear respaldo de BNUP </button>
-    </a>
-
-    {% if request.user.is_authenticated %}
-        {% if request.user.is_staff %}
-            <a style="text-decoration: none;">
-                <button class="eliminar" style="background-color: #dd1d1d;" onclick="deleteSelected()">Eliminar bnup</button>
-
+    <div class="button-container">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" style="text-decoration: none;">
+            <button class="crear-btn">
+                <span class="text">Crear BNUP</span>
+                <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
+                            </svg>
+                </span>
+            </button>
+        </a>
+         
+    
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_staff %}
+            <a>
+                <button class="eliminar-btn" onclick="deleteSelected()">
+                <span class="text">Eliminar BNUP</span>
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
+                    </svg>
+                </span>
+                </button>
             </a>
+            {% endif %}
         {% endif %}
-    {% endif %}
-
-
-
+    </div>
     <section class="section" id="busqueda">
         <h2>Solicitudes</h2>
+        <!-- Barra de búsqueda -->
+
+        <input type="text" id="searchInput" onkeyup="buscarPorCalle()" placeholder="Buscar por calle">
 
         <!-- Resultados de búsqueda -->
         <table id="tablaResultados">
@@ -337,6 +350,38 @@
         }
     }
 </script>
+
+
+<!-- Sccript de filtro-->
+
+<script>
+    function buscarPorCalle() {
+        var input = document.getElementById('searchInput');
+        var filter = input.value.toUpperCase(); // Convierte la búsqueda a mayúsculas para comparar insensiblemente
+        var table = document.getElementById('tablaResultados');
+        var tr = table.getElementsByTagName('tr'); // Obtiene todas las filas de la tabla
+    
+        // Itera sobre todas las filas de la tabla
+        for (var i = 0; i < tr.length; i++) {
+            var td2 = tr[i].getElementsByTagName('td')[2]; // Accede a la tercera columna (índice 2)
+            var td3 = tr[i].getElementsByTagName('td')[3]; // Accede a la cuarta columna (índice 3)
+            
+            // Asegurarse de que td2 y td3 existan
+            if (td2 || td3) {
+                var textValue2 = td2 ? td2.textContent || td2.innerText : ''; // Obtiene el texto de la columna 2
+                var textValue3 = td3 ? td3.textContent || td3.innerText : ''; // Obtiene el texto de la columna 3
+
+                // Verifica si el filtro aparece en alguna de las dos columnas
+                if (textValue2.toUpperCase().indexOf(filter) > -1 || textValue3.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';  // Muestra la fila si hay coincidencia en cualquiera de las columnas
+                } else {
+                    tr[i].style.display = 'none';  // Oculta la fila si no hay coincidencia
+                }
+            }
+        }
+    }
+</script>
+
 
 
 {% endblock main_content %}
