@@ -8,10 +8,11 @@
 
 <link href="{% static 'css/bnup.css' %}" rel="stylesheet" />
 
-<h1>Sistema de Ingresos de BNUP (Sujeto a Cambios)</h1>
+
 
 
 <div class="container"> 
+    <h1>Sistema de Ingresos de BNUP (Sujeto a Cambios)</h1>
     <div class="button-container">
         <a href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" style="text-decoration: none;">
             <button class="crear-btn">
@@ -47,83 +48,91 @@
         <input type="text" id="searchInput" onkeyup="buscarPorCalle()" placeholder="Buscar por calle">
 
         <!-- Resultados de búsqueda -->
-        <table id="tablaResultados">
-            <thead>
-                <tr>
-                    {% if request.user.is_authenticated %}
-                        {% if request.user.is_staff %}
-                        <th>Seleccione</th>
+        <div class="table-container">
+            <table id="tablaResultados">
+                <thead>
+                    <tr>
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.is_staff %}
+                            <th>Seleccione</th>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                    <th>Código SECPLAPP</th>
-                    <th>Unidad Técnica</th>
-                    <th>Calle</th>
-                    <th>Funcionario SECPLA</th>
-                    <th>Fecha de Ingreso</th>
-                    <th>Constituye</th>
-                    <th>Datos Entrada</th> 
-                    <th>Ver adjunto</th> 
-                </tr>
-            </thead>
-            <tbody>
-                {% for bnup in bnups %}
-                <tr>
-                    {% if request.user.is_authenticated %}
-                        {% if request.user.is_staff %}
+                        <th>Código SECPLAPP</th>
+                        <th>Unidad Técnica</th>
+                        <th>Calle</th>
+                        <th>Funcionario SECPLA</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Constituye</th>
+                        <th>Datos Entrada</th> 
+                        <th>Ver adjunto</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bnup in bnups %}
+                    <tr>
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.is_staff %}
+                            <td>
+                                <input type="checkbox" class="delete-checkbox" value="{{ bnup.id }}">
+                            </td>
+                            {% endif %}
+                        {% endif %}
+                        <td>{{ bnup.codigo }}</td>
+                        <td>{{ bnup.unidad_técnica }}</td>
+                        <td>{{ bnup.calle }}</td>
+                        <td>{{ bnup.funcionario.nombre }}</td>
+                        <td>{{ bnup.fecha|date:"d/m/Y" }}</td>
                         <td>
-                            <input type="checkbox" class="delete-checkbox" value="{{ bnup.id }}">
+                            {% if bnup.constituye == "OTRO" %}
+                                {{ bnup.constituye|default:"Otro" }}
+                            {% else %}
+                                {{ bnup.constituye }}
+                            {% endif %}
                         </td>
-                        {% endif %}
-                    {% endif %}
-                    <td>{{ bnup.codigo }}</td>
-                    <td>{{ bnup.unidad_técnica }}</td>
-                    <td>{{ bnup.calle }}</td>
-                    <td>{{ bnup.funcionario.nombre }}</td>
-                    <td>{{ bnup.fecha|date:"d/m/Y" }}</td>
-
-
-                    <td>
-                        {% if bnup.constituye == "OTRO" %}
-                            {{ bnup.constituye|default:"Otro" }}
-                        {% else %}
-                            {{ bnup.constituye }}
-                        {% endif %}
-                    </td>
-
-                    
-                    <!-- Previsualización de datos de entrada -->
-                    <td>
-                        <div class="icon-container">                        
-                            <button class="buttonLogin buttonPreview button1" onclick="openPreviewModal('{{ bnup.n_de_ingreso }}',
-                                        '{{ bnup.funcionario.nombre }}', '{{ bnup.fecha }}', '{{ bnup.otro_constituye }}',
-                                        '{{ bnup.calle }}', '{{ bnup.ref }}', '{{ bnup.mat }}')">
-                                <span class="material-symbols-outlined bell">export_notes</span>
-                            </button>                        
-                            <div class="tooltip">Ver datos de entrada</div>
-                        </div>
-                    </td>
-
-                    <!-- Archivo adjunto -->
-                    <td>
-                        {% if bnup.archivo_adjunto %}
-                        <div class="icon-container">                        
-                            <a href="{{ bnup.archivo_adjunto.url }}" target="_blank" style="text-decoration: none;">
-                                <button class="buttonLogin buttonPreview button2">
-                                    <span class="material-symbols-outlined bell">find_in_page</span>
-                                </button>
-                            </a>                        
-                            <div class="tooltip">Ver archivo de ingreso</div>
-                        </div> 
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8">No hay datos</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        <!-- Previsualización de datos de entrada -->
+                        <td>
+                            <div class="icon-container">                        
+                                {% if bnup.otro_constituye %}
+                                <button class="buttonLogin buttonPreview button1" onclick="openPreviewModal('{{ bnup.n_de_ingreso }}',
+                                            '{{ bnup.funcionario.nombre }}','{{ bnup.otro_constituye }}',
+                                            '{{ bnup.calle }}', '{{ bnup.ref }}', '{{ bnup.mat }}')">
+                                    <span class="material-symbols-outlined bell">export_notes</span>
+                                </button>                        
+                                <div class="tooltip">Ver datos de entrada</div>
+                                {% else %}
+                                <!-- Si otro_constituye es falso, se muestra el botón de vista previa -->
+                                <button class="buttonLogin buttonPreview button1" onclick="openPreviewModal('{{ bnup.n_de_ingreso }}',
+                                            '{{ bnup.funcionario.nombre }}', '{{ bnup.constituye }}',
+                                            '{{ bnup.calle }}', '{{ bnup.ref }}', '{{ bnup.mat }}')">
+                                    <span class="material-symbols-outlined bell">export_notes</span>
+                                </button>                        
+                                <div class="tooltip">Ver datos de entrada</div>
+                            {% endif %}
+                            </div>
+                        </td>
+    
+                        <!-- Archivo adjunto -->
+                        <td>
+                            {% if bnup.archivo_adjunto %}
+                            <div class="icon-container">                        
+                                <a href="{{ bnup.archivo_adjunto.url }}" target="_blank" style="text-decoration: none;">
+                                    <button class="buttonLogin buttonPreview button2">
+                                        <span class="material-symbols-outlined bell">find_in_page</span>
+                                    </button>
+                                </a>                        
+                                <div class="tooltip">Ver archivo de ingreso</div>
+                            </div> 
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8">No hay datos</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
     </section>
 
@@ -291,7 +300,6 @@
             <div class="modal-body">
                 <h4>Código de Ingreso: <span id="previewCodigo"></span></h4>
                 <p><strong>Funcionario:</strong> <span id="previewFuncionario"></span></p>
-                <p><strong>Fecha de Ingreso:</strong> <span id="previewFecha"></span></p>
                 <p><strong>Constituye:</strong> <span id="previewConstituye"></span></p>
                 <p><strong>Calle:</strong> <span id="previewCalle"></span></p>
                 <p><strong>REF:</strong> <span id="previewRef"></span></p>
@@ -302,10 +310,9 @@
 </div>
 
 <script>
-    function openPreviewModal(codigo, funcionario, fecha, constituye, calle, ref, mat) {
+    function openPreviewModal(codigo, funcionario, constituye, calle, ref, mat) {
         document.getElementById("previewCodigo").textContent = codigo;
         document.getElementById("previewFuncionario").textContent = funcionario;
-        document.getElementById("previewFecha").textContent = fecha;
         document.getElementById("previewConstituye").textContent = constituye;
         document.getElementById("previewCalle").textContent = calle;
         document.getElementById("previewRef").textContent = ref;
