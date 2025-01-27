@@ -7,20 +7,27 @@
 <link rel="stylesheet" href="{% static 'css/Form_home.css' %}">
 
 
-<div class="container mt-4" style="max-width: 85rem;" >
+<div class="container mt-4" >
     
 
 
-    <h1 class="text-center" style="color: rgb(61, 61, 61);">Lista de Iniciativas</h1 >
+    <h1>Lista de Iniciativas</h1 >
 
-    <div class="caja" style="box-shadow: 0 2px 4px rgb(0 0 0 / 68%);
+        <a href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" style="text-decoration: none;">
+            <button class="btn-crear">
+                <span class="text">Nueva Prefactibilidad</span>
+                <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="#FFFFFF" width="30" height="30">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                </span>
+            </button>
+        </a> 
+
+    <div class="caja" style="box-shadow: 0px 1px 8px rgb(0 0 0 / 68%);;
 ">
 
     
-    <br>
-        <a class="btn-crear" style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" >Nueva Prefactibilidad</a>
-    <br>
-    <br>
         <div id="tabla-container">
             <div id="pagination-controls"></div>
             <table id="tablaSolicitudes" class="tablaSolicitudes">
@@ -42,23 +49,17 @@
                         <td>{{ iniciativas.fecha }}</td>
                         <td>{{ iniciativas.Estado }}</td>
                         <td>{{ iniciativas.updated }}</td>
-                        <td> 
-                            <button class="button-cls active">Acciones</button>
-
-                                <div class="dd-cls">
-                                <button class="button-cls-split"> 
-                                        <i class="fa fa-angle-double-down"></i>
-                                </button>
-                                <div class="dd-cont-cls">
-                                    <a href="#" data-id="{{ iniciativas.id }}" class="open-modal">Visualizar</a>
-                                    <a href="{% url 'actualizar' iniciativas.id %}">Editar</a>
-                                    <a href="#">Eliminar</a>
-                                </div>
-
-
-                                
-
+                        <td>
+                            <button class="button-cls active dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Acciones <i class="fa fa-angle-double-down"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item open-modal" href="#" data-id="{{ iniciativas.id }}">Visualizar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'actualizar' iniciativas.id %}">Editar</a></li>
+                                <li><a class="dropdown-item" href="#">Eliminar</a></li>
+                            </ul>
                         </td>
+                        
                     </tr>
                     {% empty %}
                     <tr>

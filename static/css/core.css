@@ -1,0 +1,13 @@
+h4{
+    align-items: center;
+}
+
+.nav-item{
+    margin-left: 15px;
+}
+
+.nav-item:hover{
+    background-color: #0f3a0f6e;
+    
+}
+

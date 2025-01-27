@@ -1,5 +1,4 @@
 
-
 {% extends 'Core.html' %}
 
 {% load static %}
@@ -9,22 +8,20 @@
 <link href="{% static 'css/bnup.css' %}" rel="stylesheet" />
 
 
-
+<h1>Sistema de Ingresos de BNUP</h1>
 
 <div class="container"> 
-    <h1>Sistema de Ingresos de BNUP (Sujeto a Cambios)</h1>
     <div class="button-container">
         <a href="#" data-bs-toggle="modal" data-bs-target="#dynamicEmailModal" data-email-id="1" style="text-decoration: none;">
             <button class="crear-btn">
                 <span class="text">Crear BNUP</span>
                 <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="#FFFFFF"  style="width: 20px; height: 20px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                             </svg>
                 </span>
             </button>
-        </a>
-         
+        </a>        
     
         {% if request.user.is_authenticated %}
             {% if request.user.is_staff %}
@@ -44,8 +41,17 @@
     <section class="section" id="busqueda">
         <h2>Solicitudes</h2>
         <!-- Barra de búsqueda -->
+        
+        <!-- Desde Uiverse.io por alexruix -->
+        <div class="grupo">
+            <svg class="icono" aria-hidden="true" viewBox="0 0 24 24">
+                <g>
+                    <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                </g>
+            </svg>
+            <input type="text" id="searchInput" onkeyup="buscarPorCalle()" placeholder="Buscar por calle..." class="entrada">
+        </div>
 
-        <input type="text" id="searchInput" onkeyup="buscarPorCalle()" placeholder="Buscar por calle">
 
         <!-- Resultados de búsqueda -->
         <div class="table-container">
@@ -54,7 +60,7 @@
                     <tr>
                         {% if request.user.is_authenticated %}
                             {% if request.user.is_staff %}
-                            <th>Seleccione</th>
+                            <th>Seleccione para eliminar</th>
                             {% endif %}
                         {% endif %}
                         <th>Código SECPLAPP</th>
@@ -139,7 +145,6 @@
 
         <!-- Sección de ingreso de solicitudes -->
         <section>
-
             <div class="modal fade" id="dynamicEmailModal" tabindex="-1" aria-labelledby="dynamicEmailModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -148,99 +153,108 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-
-                                <form id="dynamicEmailForm" method="POST" class="form" enctype="multipart/form-data" action="{% url 'bnup' %}">
-                                    {% csrf_token %}
-                                    <label for="codigoProyecto">Código del Proyecto:</label>
-                                    <input type="text" id="codigoProyecto" name="codigoProyecto" placeholder="Ingrese el código del proyecto" required>
-
-                                    <label for="codigoProyecto">REF:</label>
-                                    <textarea name="ref" id="ref" cols="97%" rows="2"  placeholder="Ingrese REF" ></textarea>
-
-                                    <label for="codigoProyecto">MAT:</label>
-                                    <textarea name="mat" id="mat" cols="97%" rows="2"  placeholder="Ingrese MAT" ></textarea>
-             
-                                    <label for="Calle">Calle:</label>
-                                    <input type="text" id="Calle" name="Calle" placeholder="Ingrese la calle" required>
-
-                                    <label for="SECPLA">Salida SECPLA:</label>
-                                    <input type="text" id="n_de_ingreso" name="n_de_ingreso" placeholder="Ingrese la Salida SECPLA" required>
-
-                                    <label for="Codigo">Codigo SECPLA:</label>
-                                    <input type="number" id="codigo" name="codigo" placeholder="Ingrese Código SECPLA" required>
-
-                                    <label for="unidadTecnica">Unidad Técnica Responsable:</label>
-                                    <select id="unidadTecnica" name="unidadTecnica" required>
-                                        <option value="" disabled selected>Seleccione una unidad técnica</option>
-                                        {% for value, label in Unidad_técnica %}
-                                            <option value="{{ value }}" {% if value == '' %} disabled {% endif %}>{{ label }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    
+                            <form id="dynamicEmailForm" method="POST" class="form" enctype="multipart/form-data" action="{% url 'bnup' %}">
+                                {% csrf_token %}
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="codigoProyecto">Código del Proyecto:</label>
+                                        <input type="text" id="codigoProyecto" name="codigoProyecto" placeholder="Ingrese el código del proyecto" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="ref">REF:</label>
+                                        <textarea name="ref" id="ref" cols="30" rows="2" placeholder="Ingrese REF"></textarea>
+                                    </div>
+                                </div>
                                 
-                                    <!-- Selección de funcionario -->
-                                    <label for="funcionarioSecpla">Funcionario SECPLA a Cargo:</label>
-
-                                    <!-- Selección de funcionario -->
-                                    <div id="selectFuncionarioContainer">
-                                        <select id="funcionarioSecpla" name="funcionarioSecpla">
-                                            <option value="" disabled selected>Seleccione un funcionario</option>
-                                            {% for usuario in usuarios %}
-                                            <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="Calle">Calle:</label>
+                                        <input type="text" id="Calle" name="Calle" placeholder="Ingrese la calle" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="mat">MAT :</label>
+                                        <textarea name="mat" id="mat" cols="30" rows="2" placeholder="Ingrese MAT"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="n_de_ingreso">Salida SECPLA:</label>
+                                        <input type="text" id="n_de_ingreso" name="n_de_ingreso" placeholder="Ingrese la Salida SECPLA" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="codigo">Codigo SECPLA:</label>
+                                        <input type="number" id="codigo" name="codigo" placeholder="Ingrese Código SECPLA" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="unidadTecnica">Unidad Técnica Responsable:</label>
+                                        <select id="unidadTecnica" name="unidadTecnica" required>
+                                            <option value="" disabled selected>Seleccione una unidad técnica</option>
+                                            {% for value, label in Unidad_técnica %}
+                                                <option value="{{ value }}" {% if value == '' %} disabled {% endif %}>{{ label }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
-
-                                    <!-- Campo de entrada para agregar un nuevo funcionario -->
-                                    <div id="newFuncionarioContainer" style="display: none; margin-top: 10px;">
-                                        <label for="newFuncionario">Nombre del Nuevo Funcionario:</label>
-                                        <input type="text" id="newFuncionario" name="newFuncionario" placeholder="Ingrese el nombre del funcionario" disabled>
+                                    <div class="form-group">
+                                        <label for="funcionarioSecpla">Funcionario SECPLA a Cargo:</label>
+                                        <div id="selectFuncionarioContainer">
+                                            <select id="funcionarioSecpla" name="funcionarioSecpla">
+                                                <option value="" disabled selected>Seleccione un funcionario</option>
+                                                {% for usuario in usuarios %}
+                                                    <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div id="newFuncionarioContainer" style="display: none; margin-top: 10px;">
+                                            <label for="newFuncionario" style="color: rgb(163, 67, 67);text-decoration: underline;">Nombre del Nuevo Funcionario:</label>
+                                            <input type="text" id="newFuncionario" name="newFuncionario" placeholder="Ingrese el nombre del funcionario" disabled>
+                                        </div>
+                                        <div class="btn-container">
+                                            <button type="button" class="btn" id="toggleFuncionarioBtn" onclick="toggleFuncionarioMode()" style="margin-top: 10px;">
+                                                Cambiar a agregar nuevo funcionario
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    <!-- Botón para alternar entre las opciones -->
-                                    <div class="btn-container">
-                                        <button type="button" class="btn" id="toggleFuncionarioBtn" onclick="toggleFuncionarioMode()" style="margin-top: 10px;">
-                                            Cambiar a agregar nuevo funcionario
-                                        </button>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label for="fechaIngreso">Fecha de Ingreso:</label>
+                                        <input type="date" id="fechaIngreso" name="fechaIngreso" required>
                                     </div>
-
-
-                                    <label for="fechaIngreso">Fecha de Ingreso:</label>
-                                    <input type="date" id="fechaIngreso" name="fechaIngreso" required>
-
-                                    <label for="adjuntarArchivo">Adjuntar Archivo:</label>
-                                    <div class="file-input">
-                                        <input type="file" id="adjuntarArchivo" name="adjuntarArchivo" required>
-                                    </div>                                    
-
-                                    <div>
+                                    <div class="col-md-8">
+                                        <label for="adjuntarArchivo">Adjuntar Archivo:</label>
+                                        <div class="file-input">
+                                            <input type="file" id="adjuntarArchivo" name="adjuntarArchivo" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
                                         <label for="codigoProyecto">Constituye:</label>
-                                        <div id="codigoProyecto" style="display: flex;text-align: center;justify-content: space-evenly;flex-wrap: nowrap;flex-direction: row;align-items: flex-end;">
+                                        <div id="codigoProyecto" style="display: flex; text-align: center; justify-content: space-evenly; flex-wrap: nowrap; flex-direction: row; align-items: flex-end;">
                                             <label for="constituyesi">Sí</label>
                                             <input type="radio" id="constituyesi" name="constituye" value="si">
                                             <label for="constituyeNo">No</label>
                                             <input type="radio" id="constituyeNo" name="constituye" value="no">
-
                                             <label for="constituyeOtros">Otros</label>
                                             <input type="radio" id="constituyeOtros" name="constituye" value="otros">
                                         </div>
-                                    
                                         <input type="text" id="Constituye_otro" name="Constituye_otro" placeholder="Escribe Otro" disabled>
                                     </div>
-                                                                        
-                                    <button type="submit" class="cta">
-                                        <span>Enviar</span>
-                                        <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                            <path d="M1,5 L11,5"></path>
-                                            <polyline points="8 1 12 5 8 9"></polyline>
-                                        </svg>
-                                    </button>                                     
-                                </form>
+                                </div>
+                                <button type="submit" class="cta">
+                                    <span>Enviar</span>
+                                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                        <path d="M1,5 L11,5"></path>
+                                        <polyline points="8 1 12 5 8 9"></polyline>
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
         </section>
 </div>
 
@@ -290,14 +304,16 @@
 </script>
 
 <!-- Modal para previsualización -->
-<div class="modal" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="previewModalLabel">Previsualización de la Solicitud</h5>
+
+
+<div class="modal custom-modal" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header custom-modal-header">
+                <h5 class="modal-title custom-modal-title" id="previewModalLabel">Previsualización de la Solicitud</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body custom-modal-body">
                 <h4>Código de Ingreso: <span id="previewCodigo"></span></h4>
                 <p><strong>Funcionario:</strong> <span id="previewFuncionario"></span></p>
                 <p><strong>Constituye:</strong> <span id="previewConstituye"></span></p>
@@ -308,6 +324,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     function openPreviewModal(codigo, funcionario, constituye, calle, ref, mat) {

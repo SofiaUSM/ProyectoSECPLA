@@ -3,27 +3,58 @@
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    font-size: 2rem; /* Tamaño de fuente grande */
+    font-weight: 700; /* Negrita */
+    color: #3d3d3d; /* Color gris oscuro */
+    text-align: center; /* Centrar el texto */
+    margin-top: 1rem; /* Espaciado superior */
+    margin-bottom: 1rem; /* Espaciado inferior */
+    text-transform: uppercase; /* Transformar texto a mayúsculas */
+    letter-spacing: 0.1em; /* Espaciado entre letras */
+  
+  }
+
 /* Table styles */
 .tablaSolicitudes {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin-top: 1rem; /* Espaciado superior */
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     font-size: 1rem;
-    text-align: left;
+    text-align: center;
 }
 
-.tablaSolicitudes th,
+/* Table header styles */
+.tablaSolicitudes th, 
 .tablaSolicitudes td {
-    padding: 12px;
-    border-bottom: 1px solid #b3b3b3;
+    padding: 0.8rem; /* Espaciado de celdas */
+    border: 1px solid #d0d0d0; /* Borde de las celdas */
+    text-align: center;
 }
 
-/* Header styles */
+/* Header styling */
 .tablaSolicitudes thead th {
-    background-color: rgb(158, 187, 152);
-    color: #ffffff;
-    font-weight: bold;
+    background-color: rgb(101, 141, 94); /* Fondo del encabezado */
+    color: #ffffff; /* Color de texto blanco */
+    letter-spacing: 0.05em; /* Espaciado de las letras */
+    font-weight: bold; /* Negrita en el encabezado */
 }
+
+/* Body cell styling */
+.tablaSolicitudes td {
+    color: #333333; /* Color de texto */
+    font-weight: 400; /* Peso de fuente normal */
+}
+
+/* Hover effect */
+.tablaSolicitudes tr:hover td {
+    background-color: #e6f7e6; /* Fondo verde claro al pasar el ratón */
+}
+
 
 .inicio{
     border-radius: 15px 0% 00% 0%;
@@ -43,8 +74,8 @@
     font-size: 0.9rem;
     border: none;
     cursor: pointer;
-    background-color: rgb(132, 169, 125);
-    color: white;
+    background-color: #3e91afbb;
+    color: rgb(255, 255, 255);
     border-radius: 0px 0px 0px 0px;
     transition: background-color 0.3s ease;
 }
@@ -54,11 +85,11 @@
 }
 
 .tablaSolicitudes button:hover {
-    background-color: rgb(81, 128, 71);
+    background-color: #295c6e;
 }
 
 .tablaSolicitudes button a {
-    color: white;
+    color: rgb(255, 255, 255);
     text-decoration: none;
 }
 
@@ -76,63 +107,102 @@
 
 /* Botón personalizado */
 .btn-crear {
-    display: inline-block;
-    background: linear-gradient(45deg, rgb(86, 118, 79), rgb(158, 187, 152)); /* Degradado verde */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: bold;
+    width: 170px;
+    height: 50px;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Efecto hover */
-.btn-crear:hover {
-    background: linear-gradient(45deg, rgb(86, 118, 79), rgb(158, 187, 152)); /* Colores más oscuros */
-    box-shadow: 0px 4px 15px rgba(14, 168, 0, 0.103);
+    display: flex;
+    align-items: center;
+    text-align: start;
+    background: rgb(101, 141, 94);/* Color verde para crear */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  }
+  
+.btn-crear, .btn-crear span {
+    transition: 200ms;
+  }
+  
+.btn-crear .text {
     color: white;
-    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    font-weight: bold;
+    margin-left: 10px;
+    
 }
-
-/* Animación ondulante */
-.btn-crear::before {
-    content: '';
+  
+.btn-crear .icon {
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: skewX(-45deg);
-    transition: all 0.5s;
+    border-left: 1px solid rgb(70, 99, 65); /* Color verde más oscuro */
+    transform: translateX(125px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+.btn-crear svg {
+    width: 15px;
+    fill: #eee;
+}
+  
+.btn-crear:hover {
+    background:rgb(70, 99, 65);/* Color verde más oscuro al pasar el cursor */
+}
+  
+.btn-crear:hover .text {
+    color: transparent;
+}
+  
+.btn-crear:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+  }
+  
+.btn-crear:focus {
+    outline: none;
+  }
+  
+.btn-crear:active .icon svg {
+    transform: scale(0.8);
+  }
+  
+  
+
+/* Asegurarnos de que la tabla sea desplazable horizontalmente */
+#tabla-container {
+    overflow-x: auto;  /* Permite desplazamiento horizontal */
+    -webkit-overflow-scrolling: touch; /* Mejora la experiencia en dispositivos táctiles */
 }
 
-.btn-crear:hover::before {
-    left: 100%;
+/* Estilos básicos para la tabla */
+.tablaSolicitudes {
+    width: 100%; /* La tabla debe ocupar todo el ancho disponible */
+    border-collapse: collapse; /* Eliminar espacio entre celdas */
 }
 
-/* Estilo del enlace */
-.btn-crear a {
-    color: white;
-    text-decoration: none;
+.tablaSolicitudes th, .tablaSolicitudes td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd; /* Borde ligero para las celdas */
 }
 
-.btn-crear a:hover {
-    text-decoration: underline; /* Opcional: efecto en el texto del enlace */
+.tablaSolicitudes th {
+    background-color: #f2f2f2; /* Color de fondo para los encabezados */
 }
 
-
-/* Responsive table */
-@media (max-width: 768px) {
-    .tablaSolicitudes {
-        font-size: 0.9rem;
+/* Hacer que las celdas se ajusten automáticamente en pantallas pequeñas */
+@media screen and (max-width: 768px) {
+    .tablaSolicitudes th, .tablaSolicitudes td {
+        padding: 6px; /* Reducir el espacio en pantallas pequeñas */
+        font-size: 12px; /* Reducir tamaño de fuente */
     }
 }
+
+
+
+
 /* Estilo para el input de búsqueda */
 input[type="text"] {
     border: 1px solid #ccc;
@@ -182,26 +252,35 @@ input[type="text"]:focus {
     font-size: 16px;
     border: none;
     outline: none;
-  }
-  .button-cls-split {
+}
+
+.button-cls.active i {
+    margin-left: 8px;  /* Espacio entre el texto y el ícono */
+}
+
+
+.button-cls-split {
     color: #dc3545;
     border-color: #dc3545;
     background-color:#fff;
     padding: 15px;
     font-size: 16px;
     border: 1px solid #dc3545;
-  }
-  .dd-cls {
+}
+.dd-cls {
     position: absolute;
     display: inline-block;
-  }
-  .dd-cls:hover .dd-cont-cls {
+}
+
+.dd-cls:hover .dd-cont-cls {
     display: block;
-  }
-  .button-cls:hover, .dd-cls:hover .button-cls {
+}
+  
+.button-cls:hover, .dd-cls:hover .button-cls {
     background-color: #A51D2B;
-  }
-  .dd-cont-cls {
+}
+  
+.dd-cont-cls {
     border: 2px solid #d8d8d8;
 
     display: none;
@@ -210,8 +289,8 @@ input[type="text"]:focus {
     min-width: 160px;
     z-index: 1;
     border-radius: 0px 10px 10px 10px;
-  }
-  .dd-cont-cls a {
+} 
+.dd-cont-cls a {
     color:#ffffff;
     padding: 12px 16px;
     text-decoration: none;
@@ -220,7 +299,7 @@ input[type="text"]:focus {
   .dd-cont-cls a:hover {
     
       background-color: rgb(65, 102, 59);
-      color:#fff;
+      color:#ffffff;
    }
   
 

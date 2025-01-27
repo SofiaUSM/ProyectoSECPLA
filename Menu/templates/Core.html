@@ -13,9 +13,9 @@
     
     <link rel="icon" type="image/x-icon" href="https://departamentosig.munivalpo.cl/media/assets/imagen_sig/None/adjunto_6pF8sLX.png"/>
     <!-- Enlace a base.css -->
-    <link href="{% static 'css/base.css' %}" rel="stylesheet" />
+
     <!-- Hojas de estilo específicas -->
-    <link href="{% static 'css/slide.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/core.css' %}" rel="stylesheet" />
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Font Awesome icons (free version) -->
@@ -42,21 +42,32 @@
   </head>
   <body class="d-flex flex-column h-100" >
 
-    <header class="p-3 mb-3 border-bottom" style="background-color: rgb(107, 137, 101);">
+    <header class="p-3" style="background: linear-gradient(to right, rgb(101, 141, 94), #3e91afaf);">
       <div class="container">
+        <div class="nav-title text-center mb-2 mb-lg-0">
+          <h2 class="fw-bold text-white">Proyecto Prefactibilidad</h2>
+        </div> 
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><h4 style="font-weight: bold; color: white;">Proyecto Prefactibilidad</h4></li>
-            <li><a href="{% url 'menu' %}" class="nav-link px-2 link-body-emphasis" style="color: white;">Iniciativa</a></li>
-            <li><a href="{% url 'bnup' %}" class="nav-link px-2 link-body-emphasis" style="color: white;">Bnup de respuesta</a></li>
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center align-items-center mb-md-0 flex-column flex-lg-row text-center">
+            <!-- Título siempre visible -->
+
+            <!-- Enlaces de navegación -->
+            <li class="nav-item">
+              <a href="{% url 'menu' %}" class="nav-link px-3 text-white">Iniciativa</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'bnup' %}" class="nav-link px-3 text-white">Bnup de respuesta</a>
+            </li>
           </ul>
+          
+          
           <div class="dropdown text-end">
             <a href="#" style="text-decoration: none; color: white;" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://cdn-icons-png.flaticon.com/512/20/20079.png" alt="mdo" width="32" height="32" style="background-color: white;" class="rounded-circle">
+              <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="mdo" width="32" height="32" style="background-color: white;" class="rounded-circle">
               Usted es: {{ user.username }}
             </a>
             <ul class="dropdown-menu text-small">
-              <li><a class="dropdown-item">Cambiar Contraseña</a></li>
+              <!--<li><a class="dropdown-item">Cambiar Contraseña</a></li> -->
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
             </ul>            
